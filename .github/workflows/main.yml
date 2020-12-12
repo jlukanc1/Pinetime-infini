@@ -20,7 +20,8 @@ on:
 # Steps to run for the Workflow
 jobs:
   build:
-
+    env:
+     ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     # Run these steps on Ubuntu
     runs-on: ubuntu-latest
 
