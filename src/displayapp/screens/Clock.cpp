@@ -154,7 +154,7 @@ bool Clock::Refresh() {
     lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 10,5);
 
     //end face
-
+    }
   // TODO heartbeat = heartBeatController.GetValue();
   if(heartbeat.IsUpdated()) {
     char heartbeatBuffer[4];
@@ -176,6 +176,7 @@ bool Clock::Refresh() {
 
   return running;
 }
+
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
