@@ -144,12 +144,12 @@ bool Clock::Refresh() {
     //face goes here
 
     char hourBuffer[5];
-    sprintf(hourBuffer, "%02d", hour);
+    sprintf(hourBuffer, "llu", hour);
     lv_label_set_text(hourTime, hourBuffer);
     lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0,0);
 
     char minuteBuffer[5];
-    sprintf(minuteBuffer, "%02d", minute);
+    sprintf(minuteBuffer, "%llu", minute);
     lv_label_set_text(hourTime, minuteBuffer);
     lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 10,5);
 
