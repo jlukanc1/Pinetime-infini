@@ -131,7 +131,7 @@ bool Clock::Refresh() {
 
     auto dp = date::floor<date::days>(newDateTime);
     auto time = date::make_time(newDateTime-dp);
-    auto yearMonthDay = date::year_month_day(dp);
+    //auto yearMonthDay = date::year_month_day(dp);
 
     //auto year = (int)yearMonthDay.year();
     //auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
@@ -176,42 +176,6 @@ bool Clock::Refresh() {
 
   return running;
 }
-/*
-const char *Clock::MonthToString(Pinetime::Controllers::DateTime::Months month) {
-  return Clock::MonthsString[static_cast<uint8_t>(month)];
-}
-
-const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek) {
-  return Clock::DaysString[static_cast<uint8_t>(dayOfWeek)];
-}
-
-char const *Clock::DaysString[] = {
-        "",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY",
-        "SUNDAY"
-};
-
-char const *Clock::MonthsString[] = {
-        "",
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
-};
-*/
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
