@@ -1,7 +1,7 @@
 #include "Clock.h"
 
 #include <libs/date/includes/date/date.h>
-#include <lvgl/lvgl.h>
+#include <libs/lvgl/lvgl.h>
 #include <cstdio>
 #include "BatteryIcon.h"
 #include "BleIcon.h"
