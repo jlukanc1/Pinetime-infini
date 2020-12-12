@@ -94,6 +94,7 @@ Clock::~Clock() {
   lv_obj_clean(lv_scr_act());
 }
 
+
 bool Clock::Refresh() {
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated()) {
@@ -140,36 +141,19 @@ bool Clock::Refresh() {
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
 
-    char minutesChar[3];
-    sprintf(minutesChar, "%02d", static_cast<int>(minute));
+    //face goes here
 
-    char hoursChar[3];
-    sprintf(hoursChar, "%02d", static_cast<int>(hour));
+    char hourBuffer[5];
+    sprintf(hourBuffer, "%d", hour);
+    lv_label_set_text(hourTime, hourBuffer);
+    lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0,0);
 
-    char timeStr[6];
-    sprintf(timeStr, "%c%c:%c%c", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
+    char minuteBuffer[5];
+    sprintf(minuteBuffer, "%d", minute);
+    lv_label_set_text(hourTime, minuteBuffer);
+    lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 10,5);
 
-    if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
-      displayedChar[0] = hoursChar[0];
-      displayedChar[1] = hoursChar[1];
-      displayedChar[2] = minutesChar[0];
-      displayedChar[3] = minutesChar[1];
-
-      lv_label_set_text(label_time, timeStr);
-    }
-
-    if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-      char dateStr[22];
-      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
-      lv_label_set_text(label_date, dateStr);
-
-
-      currentYear = year;
-      currentMonth = month;
-      currentDayOfWeek = dayOfWeek;
-      currentDay = day;
-    }
-  }
+    //end face
 
   // TODO heartbeat = heartBeatController.GetValue();
   if(heartbeat.IsUpdated()) {
