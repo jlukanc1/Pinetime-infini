@@ -1,11 +1,11 @@
 #include "Clock.h"
 
-#include <libs/date/includes/date/date.h>
-#include <libs/lvgl/lvgl.h>
+#include <date/date.h>
+#include <lvgl/lvgl.h>
 #include <cstdio>
 #include "BatteryIcon.h"
 #include "BleIcon.h"
-#include <displayapp/screens/NotificationIcon.h>
+#include "NotificationIcon.h"
 #include "Symbols.h"
 #include "components/battery/BatteryController.h"
 #include "components/ble/BleController.h"
@@ -94,7 +94,6 @@ Clock::~Clock() {
   lv_obj_clean(lv_scr_act());
 }
 
-
 bool Clock::Refresh() {
   batteryPercentRemaining = batteryController.PercentRemaining();
   if (batteryPercentRemaining.IsUpdated()) {
@@ -131,30 +130,47 @@ bool Clock::Refresh() {
 
     auto dp = date::floor<date::days>(newDateTime);
     auto time = date::make_time(newDateTime-dp);
-    //auto yearMonthDay = date::year_month_day(dp);
+    auto yearMonthDay = date::year_month_day(dp);
 
-    //auto year = (int)yearMonthDay.year();
-    //auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
-    //auto day = (unsigned)yearMonthDay.day();
-    //auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
+    auto year = (int)yearMonthDay.year();
+    auto month = static_cast<Pinetime::Controllers::DateTime::Months>((unsigned)yearMonthDay.month());
+    auto day = (unsigned)yearMonthDay.day();
+    auto dayOfWeek = static_cast<Pinetime::Controllers::DateTime::Days>(date::weekday(yearMonthDay).iso_encoding());
 
     auto hour = time.hours().count();
     auto minute = time.minutes().count();
 
-    //face goes here
+    char minutesChar[3];
+    sprintf(minutesChar, "%02d", static_cast<int>(minute));
 
-    char hourBuffer[5];
-    sprintf(hourBuffer, "%llu", hour);
-    lv_label_set_text(hourTime, hourBuffer);
-    lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_TOP_LEFT, 0,0);
+    char hoursChar[3];
+    sprintf(hoursChar, "%02d", static_cast<int>(hour));
 
-    char minuteBuffer[5];
-    sprintf(minuteBuffer, "%llu", minute);
-    lv_label_set_text(minuteTime, minuteBuffer);
-    lv_obj_align(hourTime, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, 10,5);
+    char timeStr[6];
+    sprintf(timeStr, "%c%c:%c%c", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1]);
 
-    //end face
+    if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
+      displayedChar[0] = hoursChar[0];
+      displayedChar[1] = hoursChar[1];
+      displayedChar[2] = minutesChar[0];
+      displayedChar[3] = minutesChar[1];
+
+      lv_label_set_text(label_time, timeStr);
     }
+
+    if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
+      char dateStr[22];
+      sprintf(dateStr, "%s %d %s %d", DayOfWeekToString(dayOfWeek), day, MonthToString(month), year);
+      lv_label_set_text(label_date, dateStr);
+
+
+      currentYear = year;
+      currentMonth = month;
+      currentDayOfWeek = dayOfWeek;
+      currentDay = day;
+    }
+  }
+
   // TODO heartbeat = heartBeatController.GetValue();
   if(heartbeat.IsUpdated()) {
     char heartbeatBuffer[4];
@@ -177,6 +193,41 @@ bool Clock::Refresh() {
   return running;
 }
 
+const char *Clock::MonthToString(Pinetime::Controllers::DateTime::Months month) {
+  return Clock::MonthsString[static_cast<uint8_t>(month)];
+}
+
+const char *Clock::DayOfWeekToString(Pinetime::Controllers::DateTime::Days dayOfWeek) {
+  return Clock::DaysString[static_cast<uint8_t>(dayOfWeek)];
+}
+
+char const *Clock::DaysString[] = {
+        "",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY",
+        "SUNDAY"
+};
+
+char const *Clock::MonthsString[] = {
+        "",
+        "JAN",
+        "FEB",
+        "MAR",
+        "APR",
+        "MAY",
+        "JUN",
+        "JUL",
+        "AUG",
+        "SEP",
+        "OCT",
+        "NOV",
+        "DEC"
+};
+
 void Clock::OnObjectEvent(lv_obj_t *obj, lv_event_t event) {
   if(obj == backgroundLabel) {
     if (event == LV_EVENT_CLICKED) {
@@ -190,5 +241,4 @@ bool Clock::OnButtonPushed() {
   running = false;
   return false;
 }
-
 
