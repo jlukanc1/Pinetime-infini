@@ -53,7 +53,7 @@ Clock::Clock(DisplayApp* app,
 
   label_date = lv_label_create(lv_scr_act(), nullptr);
 
-  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_CENTER, 0, 60);
+  lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_CENTER, 0, 0);
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
