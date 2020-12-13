@@ -5,7 +5,7 @@
 #include <cstdio>
 #include "BatteryIcon.h"
 #include "BleIcon.h"
-#include "displayapp/screens/NotificationIcon.h"
+#include <displayapp/screens/NotificationIcon.h>
 #include "Symbols.h"
 #include "components/battery/BatteryController.h"
 #include "components/ble/BleController.h"
