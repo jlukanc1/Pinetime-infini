@@ -300,6 +300,7 @@ Clock::Clock(DisplayApp* app,
 
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
  
+  //This block from https://wiki.pine64.org/wiki/PineTime_Custom_Watchface_Tutorial#Using_icons
   scene.header.always_zero = 0; //Initialization
   scene.header.w = 240;                     // Setting the Width (or) Horizontal length of the image (number of px)
   scene.header.h = 240;                     // Setting the Height (or) vertical length of the image (number of px)
@@ -310,6 +311,8 @@ Clock::Clock(DisplayApp* app,
   lv_img_set_src(img_src, &scene);        // Set the created file as image (<name>)
  
   lv_obj_set_pos(img_src, 0, 0); // <x_pos>, <y_pos> are the coordinates of the cartesian plane
+  //End block
+
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
