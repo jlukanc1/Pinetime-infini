@@ -279,6 +279,19 @@ Clock::Clock(DisplayApp* app,
   displayedChar[2] = 0;
   displayedChar[3] = 0;
   displayedChar[4] = 0;
+ 
+  //This block from https://wiki.pine64.org/wiki/PineTime_Custom_Watchface_Tutorial#Using_icons
+  scene.header.always_zero = 0; //Initialization
+  scene.header.w = 240;                     // Setting the Width (or) Horizontal length of the image (number of px)
+  scene.header.h = 240;                     // Setting the Height (or) vertical length of the image (number of px)
+  scene.data_size = 240 * 240* LV_COLOR_SIZE / 8; //Allocation of memory for the image
+  scene.header.cf = LV_IMG_CF_TRUE_COLOR; // Sets the color scheme for the image
+  scene.data = scene_map;                // Maps the Image data to the Array
+  lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  // Create an image object
+  lv_img_set_src(img_src, &scene);        // Set the created file as image (<name>)
+ 
+  lv_obj_set_pos(img_src, 0, 0); // <x_pos>, <y_pos> are the coordinates of the cartesian plane
+  //End block
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryFull);
@@ -299,20 +312,6 @@ Clock::Clock(DisplayApp* app,
   label_date = lv_label_create(lv_scr_act(), nullptr);
 
   lv_obj_align(label_date, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, 60);
- 
-  //This block from https://wiki.pine64.org/wiki/PineTime_Custom_Watchface_Tutorial#Using_icons
-  scene.header.always_zero = 0; //Initialization
-  scene.header.w = 240;                     // Setting the Width (or) Horizontal length of the image (number of px)
-  scene.header.h = 240;                     // Setting the Height (or) vertical length of the image (number of px)
-  scene.data_size = 240 * 240* LV_COLOR_SIZE / 8; //Allocation of memory for the image
-  scene.header.cf = LV_IMG_CF_TRUE_COLOR; // Sets the color scheme for the image
-  scene.data = scene_map;                // Maps the Image data to the Array
-  lv_obj_t *img_src = lv_img_create(lv_scr_act(), NULL);  // Create an image object
-  lv_img_set_src(img_src, &scene);        // Set the created file as image (<name>)
- 
-  lv_obj_set_pos(img_src, 0, 0); // <x_pos>, <y_pos> are the coordinates of the cartesian plane
-  //End block
-
 
   label_time = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_style(label_time, LV_LABEL_STYLE_MAIN, LabelBigStyle);
