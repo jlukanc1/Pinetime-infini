@@ -112,7 +112,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
 }
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen3() {
-  auto& batteryVoltage = batteryController.Voltage();
-  sprintf(t3, "voltage: \n %f", 16,  batteryVoltage);
+  auto const & batteryVoltage = batteryController.Voltage();
+  snprintf(t3, 24, "voltage: \n %f", batteryVoltage);
   return std::unique_ptr<Screen>(new Screens::Label(app, t3));
 }
