@@ -48,7 +48,6 @@ bool SystemInfo::OnTouchEvent(Pinetime::Applications::TouchEvents event) {
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen1() {
   auto batteryPercent = static_cast<uint8_t>(batteryController.PercentRemaining());
-  auto batteryVoltage = static_cast<uint8_t>(batteryController.Voltage());
 
   uint8_t brightness = 0;
   switch(brightnessController.Level()) {
@@ -113,6 +112,7 @@ std::unique_ptr<Screen> SystemInfo::CreateScreen2() {
 }
 
 std::unique_ptr<Screen> SystemInfo::CreateScreen3() {
+  auto& batteryVoltage = batteryController.Voltage();
   sprintf(t3, "voltage: %d%%", batteryVoltage,);
   return std::unique_ptr<Screen>(new Screens::Label(app, t3));
 }
