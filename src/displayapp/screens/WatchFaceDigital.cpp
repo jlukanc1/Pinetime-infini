@@ -146,7 +146,7 @@ bool WatchFaceDigital::Refresh() {
     char hoursChar[3];
     char ampmChar[3];
 	    if (settingsController.GetClockType() == Controllers::Settings::ClockType::H24) {
-        sprintf(hoursChar, "%02d", hour);
+        sprintf(hoursChar, "%02lld", hour);
       } else {
         if (hour == 0 && hour != 12) {
           hour = 12;
@@ -160,7 +160,7 @@ bool WatchFaceDigital::Refresh() {
           hour = hour - 12;
           sprintf(ampmChar, "PM");
         }
-        sprintf(hoursChar, "%02d", hour);
+        sprintf(hoursChar, "%02lld", hour);
     }
 
 	char secondsChar[3];
@@ -191,7 +191,7 @@ bool WatchFaceDigital::Refresh() {
 	
 	
     char timeStr[32];
-    sprintf(timeStr, "[TIME]#11cc55 %c%c:%c%c:%c%c %c#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1], secondsChar[0], secondsChar[1], ampmChar);
+    sprintf(timeStr, "[TIME]#11cc55 %c%c:%c%c:%c%c %s#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1], secondsChar[0], secondsChar[1], ampmChar);
 	
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
@@ -203,9 +203,9 @@ bool WatchFaceDigital::Refresh() {
     }
 
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
-	  
-	  char dateStr[30];
-      sprintf(dateStr, "[DATE]#007fff %s %s %d#", dayOfWeek, month, day);
+
+	    char dateStr[30];
+      sprintf(dateStr, "[DATE]#007fff %s %d %d#", dateTimeController.DayOfWeekShortToString(), char(month), char(day));
       lv_label_set_text(label_date, dateStr);
 
 

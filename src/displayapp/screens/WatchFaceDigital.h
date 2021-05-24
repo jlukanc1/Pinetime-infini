@@ -75,8 +75,8 @@ namespace Pinetime {
           Controllers::DateTime& dateTimeController;
           Controllers::Battery& batteryController;
           Controllers::Ble& bleController;
-          Controllers::Settings& settingsController;
           Controllers::NotificationManager& notificatioManager;
+          Controllers::Settings& settingsController;
           Controllers::HeartRateController& heartRateController;
           Controllers::MotionController& motionController;
       };
