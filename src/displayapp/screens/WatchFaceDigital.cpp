@@ -78,15 +78,6 @@ WatchFaceDigital::WatchFaceDigital(DisplayApp* app,
   lv_label_set_recolor(label_time, true);
   lv_obj_align(label_time, lv_scr_act(), LV_ALIGN_IN_LEFT_MID, 0, -60);
 
-  backgroundLabel = lv_label_create(lv_scr_act(), nullptr);
-  backgroundLabel->user_data = this;
-  lv_obj_set_click(backgroundLabel, true);
-  lv_obj_set_event_cb(backgroundLabel, event_handler);
-  lv_label_set_long_mode(backgroundLabel, LV_LABEL_LONG_CROP);
-  lv_obj_set_size(backgroundLabel, 240, 240);
-  lv_obj_set_pos(backgroundLabel, 0, 0);
-  lv_label_set_text(backgroundLabel, "");
-
   heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_recolor(heartbeatValue, true);
   lv_label_set_text(heartbeatValue, "[L_HR]#ee3311 0 bpm#");
@@ -200,7 +191,7 @@ bool WatchFaceDigital::Refresh() {
 	
 	
     char timeStr[32];
-    sprintf(timeStr, "[TIME]#11cc55 %c%c:%c%c:%c%c %c#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1], secondsChar[0], secondsChar[1], ampmChar[]);
+    sprintf(timeStr, "[TIME]#11cc55 %c%c:%c%c:%c%c %c#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1], secondsChar[0], secondsChar[1], ampmChar);
 	
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
       displayedChar[0] = hoursChar[0];
@@ -214,7 +205,7 @@ bool WatchFaceDigital::Refresh() {
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
 	  
 	  char dateStr[30];
-      sprintf(dateStr, "[DATE]#007fff %s %s %d#", DayOfWeekToString(dayOfWeek), MonthToString(month), day);
+      sprintf(dateStr, "[DATE]#007fff %s %s %d#", dayOfWeek, month, day);
       lv_label_set_text(label_date, dateStr);
 
 
@@ -240,15 +231,12 @@ bool WatchFaceDigital::Refresh() {
   stepCount = motionController.NbSteps();
   motionSensorOk = motionController.IsSensorOk();
   if (stepCount.IsUpdated() || motionSensorOk.IsUpdated()) {
-    lv_label_set_text_fmt(stepValue, "[STEP]#ee3377 %lu steps#", stepCount.Get());
-    lv_obj_align(stepValue, lv_scr_act(), LV_ALIGN_IN_BOTTOM_RIGHT, -5, -2);
-    lv_obj_align(stepIcon, stepValue, LV_ALIGN_OUT_LEFT_MID, -5, 0);
+    lv_label_set_text(stepValue, "[STEP]#ee3377 %lu steps#", stepCount.Get());
   }
   return running;
 }
 
-
-char const *Clock::DaysString[] = {
+char const *WatchFaceDigital::DaysString[] = {
         "",
         "MON",
         "TUE",
@@ -259,7 +247,7 @@ char const *Clock::DaysString[] = {
         "SUN"
 };
 
-char const *Clock::MonthsString[] = {
+char const *WatchFaceDigital::MonthsString[] = {
         "",
         "JAN",
         "FEB",
