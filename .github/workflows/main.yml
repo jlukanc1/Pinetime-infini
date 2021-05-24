@@ -20,11 +20,11 @@ on:
 # Steps to run for the Workflow
 jobs:
   build:
-    ACTIONS_ALLOW_UNSECURE_COMMANDS: true
     # Run these steps on Ubuntu
     runs-on: ubuntu-latest
 
     steps:
+      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       #########################################################################################
       # Download and Cache Dependencies
