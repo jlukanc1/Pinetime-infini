@@ -7,6 +7,9 @@
 #include "Screen.h"
 #include "ScreenList.h"
 #include "components/datetime/DateTimeController.h"
+#include "components/battery/BatteryController.h"
+#include "components/ble/BleController.h"
+#include "components/ble/NotificationManager.h"
 
 namespace Pinetime {
   namespace Controllers {
