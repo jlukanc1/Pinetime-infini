@@ -168,7 +168,7 @@ bool WatchFaceDigital::Refresh() {
 
 	auto batteryValue = static_cast<uint8_t>(batteryController.PercentRemaining());
 
-	char batteryGauge[10];
+	char batteryGauge[12];
     if (batteryValue > 75){
       sprintf(batteryGauge, "[++++]");  //100-75
     }
@@ -190,7 +190,7 @@ bool WatchFaceDigital::Refresh() {
     lv_label_set_text(batteryPercent, battStr);
 	
 	
-    char timeStr[32];
+    char timeStr[38];
     sprintf(timeStr, "[TIME]#11cc55 %c%c:%c%c:%c%c %s#", hoursChar[0],hoursChar[1],minutesChar[0], minutesChar[1], secondsChar[0], secondsChar[1], ampmChar);
 	
     if(hoursChar[0] != displayedChar[0] || hoursChar[1] != displayedChar[1] || minutesChar[0] != displayedChar[2] || minutesChar[1] != displayedChar[3]) {
@@ -219,7 +219,7 @@ bool WatchFaceDigital::Refresh() {
   heartbeat = heartRateController.HeartRate();
   heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
   if(heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
-    char heartbeatBuffer[26];
+    char heartbeatBuffer[28];
     if(heartbeatRunning.Get())
       sprintf(heartbeatBuffer, "[L_HR]#ee3311 %d bpm#", heartbeat.Get());
     else
@@ -230,7 +230,7 @@ bool WatchFaceDigital::Refresh() {
 
   stepCount = motionController.NbSteps();
   motionSensorOk = motionController.IsSensorOk();
-  char stepString[30];
+  char stepString[34];
   if (stepCount.IsUpdated() || motionSensorOk.IsUpdated()) {
     sprintf(stepString, "[STEP]#ee3377 %lu steps#", stepCount.Get());
     lv_label_set_text(stepValue, stepString);
