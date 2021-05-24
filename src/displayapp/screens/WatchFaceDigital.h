@@ -22,7 +22,7 @@ namespace Pinetime {
     namespace Screens {
 
       class WatchFaceDigital : public Screen {
-        public:
+      public:
         WatchFaceDigital(DisplayApp* app,
                          Controllers::DateTime& dateTimeController,
                          Controllers::Battery& batteryController,
@@ -33,10 +33,11 @@ namespace Pinetime {
                          Controllers::MotionController& motionController);
         ~WatchFaceDigital() override;
 
-          bool Refresh() override;
+        bool Refresh() override;
 
-          void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
-        private:
+        void OnObjectEvent(lv_obj_t *pObj, lv_event_t i);
+      
+      private:
           char displayedChar[5];
 
           uint16_t currentYear = 1970;

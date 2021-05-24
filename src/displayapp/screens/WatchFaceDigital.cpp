@@ -230,35 +230,10 @@ bool WatchFaceDigital::Refresh() {
 
   stepCount = motionController.NbSteps();
   motionSensorOk = motionController.IsSensorOk();
+  char stepString[30];
   if (stepCount.IsUpdated() || motionSensorOk.IsUpdated()) {
-    lv_label_set_text(stepValue, "[STEP]#ee3377 %lu steps#", stepCount.Get());
+    sprintf(stepString, "[STEP]#ee3377 %lu steps#", stepCount.Get());
+    lv_label_set_text(stepValue, stepString);
   }
   return running;
 }
-
-char const *WatchFaceDigital::DaysString[] = {
-        "",
-        "MON",
-        "TUE",
-        "WED",
-        "THU",
-        "FRI",
-        "SAT",
-        "SUN"
-};
-
-char const *WatchFaceDigital::MonthsString[] = {
-        "",
-        "JAN",
-        "FEB",
-        "MAR",
-        "APR",
-        "MAY",
-        "JUN",
-        "JUL",
-        "AUG",
-        "SEP",
-        "OCT",
-        "NOV",
-        "DEC"
-};
