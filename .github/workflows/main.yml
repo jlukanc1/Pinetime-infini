@@ -5,6 +5,7 @@
 
 # Name of this Workflow
 name: Build PineTime Firmware
+ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
 # When to run this Workflow...
 on:
@@ -24,7 +25,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      ACTIONS_ALLOW_UNSECURE_COMMANDS: true
 
       #########################################################################################
       # Download and Cache Dependencies
