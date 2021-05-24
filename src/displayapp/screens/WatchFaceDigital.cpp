@@ -204,8 +204,8 @@ bool WatchFaceDigital::Refresh() {
 
     if ((year != currentYear) || (month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
 
-	    char dateStr[30];
-      sprintf(dateStr, "[DATE]#007fff %s %d %d#", dateTimeController.DayOfWeekShortToString(), char(month), char(day));
+	    char dateStr[38];
+      //sprintf(dateStr, "[DATE]#007fff %s %d %d#", dateTimeController.DayOfWeekShortToString(), char(month), char(day));
       lv_label_set_text(label_date, dateStr);
 
 
@@ -215,7 +215,7 @@ bool WatchFaceDigital::Refresh() {
       currentDay = day;
     }
   }
-
+/**
   heartbeat = heartRateController.HeartRate();
   heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
   if(heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
@@ -227,7 +227,8 @@ bool WatchFaceDigital::Refresh() {
 
     lv_label_set_text(heartbeatValue, heartbeatBuffer);
   }
-
+**/
+/*
   stepCount = motionController.NbSteps();
   motionSensorOk = motionController.IsSensorOk();
   char stepString[34];
@@ -235,5 +236,6 @@ bool WatchFaceDigital::Refresh() {
     sprintf(stepString, "[STEP]#ee3377 %lu steps#", stepCount.Get());
     lv_label_set_text(stepValue, stepString);
   }
+  */
   return running;
 }
