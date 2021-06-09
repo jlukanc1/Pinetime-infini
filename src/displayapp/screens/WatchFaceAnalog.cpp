@@ -53,17 +53,42 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   three_bar = lv_line_create(lv_scr_act(), nullptr);
   six_bar = lv_line_create(lv_scr_act(), nullptr);
   nine_bar = lv_line_create(lv_scr_act(), nullptr);
-  twelve_bar_1 = lv_obj_create(lv_scr_act(), nullptr);
-  twelve_bar_2 = lv_obj_create(lv_scr_act(), nullptr);
+  twelve_bar_1 = lv_line_create(lv_scr_act(), nullptr);
+  twelve_bar_2 = lv_line_create(lv_scr_act(), nullptr);
   //create dots for other hours
-  one_dot = lv_obj_create(lv_scr_act(), nullptr);
-  two_dot = lv_obj_create(lv_scr_act(), nullptr);
-  four_dot = lv_obj_create(lv_scr_act(), nullptr);
-  five_dot = lv_obj_create(lv_scr_act(), nullptr);
-  seven_dot = lv_obj_create(lv_scr_act(), nullptr);
-  eight_dot = lv_obj_create(lv_scr_act(), nullptr);
-  ten_dot = lv_obj_create(lv_scr_act(), nullptr);
-  eleven_dot = lv_obj_create(lv_scr_act(), nullptr);
+  one_dot = lv_led_create(lv_scr_act(), nullptr);
+  two_dot = lv_led_create(lv_scr_act(), nullptr);
+  four_dot = lv_led_create(lv_scr_act(), nullptr);
+  five_dot = lv_led_create(lv_scr_act(), nullptr);
+  seven_dot = lv_led_create(lv_scr_act(), nullptr);
+  eight_dot = lv_led_create(lv_scr_act(), nullptr);
+  ten_dot = lv_led_create(lv_scr_act(), nullptr);
+  eleven_dot = lv_led_create(lv_scr_act(), nullptr);
+
+  lv_style_init(&dots_style);
+  //lv_style_set_size(&dots_style, LV_STATE_DEFAULT, 8);
+  lv_style_set_radius(&dots_style, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);
+  lv_style_set_border_color(&dots_style, LV_STATE_DEFAULT, lv_color_hex(0x18FFFF));
+
+  lv_obj_add_style(one_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(two_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(four_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(five_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(seven_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(eight_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(ten_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_obj_add_style(eleven_dot, LV_LINE_PART_MAIN, &dots_style);
+
+  lv_obj_align(one_dot, NULL, LV_ALIGN_CENTER, 0, 0);
+  //lv_obj_align(one_dot, NULL, LV_ALIGN_CENTER, 120 * sin(1 * 30 * PI / 180), -120 * cos(1 * 30 * PI / 180));
+  lv_obj_align(two_dot, NULL, LV_ALIGN_CENTER, 120 * sin(2 * 30 * PI / 180), -120 * cos(2 * 30 * PI / 180));
+  lv_obj_align(four_dot, NULL, LV_ALIGN_CENTER, 120 * sin(4 * 30 * PI / 180), -120 * cos(4 * 30 * PI / 180));
+  lv_obj_align(five_dot, NULL, LV_ALIGN_CENTER, 120 * sin(5 * 30 * PI / 180), -120 * cos(5 * 30 * PI / 180));
+  lv_obj_align(seven_dot, NULL, LV_ALIGN_CENTER, 120 * sin(7 * 30 * PI / 180), -120 * cos(7 * 30 * PI / 180));
+  lv_obj_align(eight_dot, NULL, LV_ALIGN_CENTER, 120 * sin(8 * 30 * PI / 180), -120 * cos(8 * 30 * PI / 180));
+  lv_obj_align(ten_dot, NULL, LV_ALIGN_CENTER, 120 * sin(10 * 30 * PI / 180), -120 * cos(10 * 30 * PI / 180));
+  lv_obj_align(eleven_dot, NULL, LV_ALIGN_CENTER, 120 * sin(11 * 30 * PI / 180), -120 * cos(11 * 30 * PI / 180));
+  lv_led_on(one_dot);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryHalf);
