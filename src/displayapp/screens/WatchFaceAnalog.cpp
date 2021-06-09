@@ -7,7 +7,7 @@
 
 #include <cmath>
 
-LV_IMG_DECLARE(bg_clock);
+//LV_IMG_DECLARE(bg_clock);
 
 using namespace Pinetime::Applications::Screens;
 
@@ -44,10 +44,26 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   sHour = 99;
   sMinute = 99;
   sSecond = 99;
-
+/*
   lv_obj_t* bg_clock_img = lv_img_create(lv_scr_act(), NULL);
   lv_img_set_src(bg_clock_img, &bg_clock);
   lv_obj_align(bg_clock_img, NULL, LV_ALIGN_CENTER, 0, 0);
+*/
+  //create bars at 3,6,9, and 2 bars at 12
+  three_bar = lv_line_create(lv_scr_act(), nullptr);
+  six_bar = lv_line_create(lv_scr_act(), nullptr);
+  nine_bar = lv_line_create(lv_scr_act(), nullptr);
+  twelve_bar_1 = lv_obj_create(lv_scr_act(), nullptr);
+  twelve_bar_2 = lv_obj_create(lv_scr_act(), nullptr);
+  //create dots for other hours
+  one_dot = lv_obj_create(lv_scr_act(), nullptr);
+  two_dot = lv_obj_create(lv_scr_act(), nullptr);
+  four_dot = lv_obj_create(lv_scr_act(), nullptr);
+  five_dot = lv_obj_create(lv_scr_act(), nullptr);
+  seven_dot = lv_obj_create(lv_scr_act(), nullptr);
+  eight_dot = lv_obj_create(lv_scr_act(), nullptr);
+  ten_dot = lv_obj_create(lv_scr_act(), nullptr);
+  eleven_dot = lv_obj_create(lv_scr_act(), nullptr);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryHalf);

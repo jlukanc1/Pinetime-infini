@@ -58,6 +58,20 @@ namespace Pinetime {
         lv_obj_t* minute_body_trace;
         lv_obj_t* second_body;
 
+        lv_obj_t* three_bar;
+        lv_obj_t* six_bar;
+        lv_obj_t* nine_bar;
+        lv_obj_t* twelve_bar_1;
+        lv_obj_t* twelve_bar_2;
+        lv_obj_t* one_dot;
+        lv_obj_t* two_dot;
+        lv_obj_t* four_dot;
+        lv_obj_t* five_dot;
+        lv_obj_t* seven_dot;
+        lv_obj_t* eight_dot;
+        lv_obj_t* ten_dot;
+        lv_obj_t* eleven_dot;
+
         // ##
         lv_point_t hour_point[2];
         lv_point_t hour_point_trace[2];
@@ -75,6 +89,8 @@ namespace Pinetime {
         lv_obj_t* label_date_day;
         lv_obj_t* batteryIcon;
         lv_obj_t* notificationIcon;
+
+        lv_color_t lume = lv_color_hex(0x18FFFF);
 
         Controllers::DateTime& dateTimeController;
         Controllers::Battery& batteryController;
