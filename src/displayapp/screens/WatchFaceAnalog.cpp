@@ -11,12 +11,11 @@
 
 using namespace Pinetime::Applications::Screens;
 
-#define HOUR_LENGTH   70
-#define MINUTE_LENGTH 80
+#define HOUR_LENGTH   60
+#define MINUTE_LENGTH 70
 #define SECOND_LENGTH 90
 #define PI            3.14159265358979323846
 #define dot_size      16
-
 
 // ##
 static int16_t coordinate_x_relocate(int16_t x) {
@@ -64,7 +63,7 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
 
   lv_style_init(&dots_style);
   lv_style_set_radius(&dots_style, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);   //corner radius, not size
-  lv_style_set_bg_color(&dots_style, LV_STATE_DEFAULT, lv_color_hex(0x18FFFF));
+  lv_style_set_bg_color(&dots_style, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_style_set_bg_opa(&dots_style, LV_STATE_DEFAULT, LV_OPA_100);
 
   lv_style_init(&bars_style);
@@ -112,10 +111,10 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   lv_line_set_points(twelve_bar_2, bar_point_vert, 2);
 
   lv_obj_align(three_bar, NULL, LV_ALIGN_CENTER, 100, 4);
-  lv_obj_align(six_bar, NULL, LV_ALIGN_CENTER, 4, 100);
+  lv_obj_align(six_bar, NULL, LV_ALIGN_CENTER, 2, 100);
   lv_obj_align(nine_bar, NULL, LV_ALIGN_CENTER, -100, 4);
-  lv_obj_align(twelve_bar_1, NULL, LV_ALIGN_CENTER, -4, -100);
-  lv_obj_align(twelve_bar_2, NULL, LV_ALIGN_CENTER, 12, -100);
+  lv_obj_align(twelve_bar_1, NULL, LV_ALIGN_CENTER, -6, -100);
+  lv_obj_align(twelve_bar_2, NULL, LV_ALIGN_CENTER, 10, -100);
 
   lv_obj_set_size(one_dot, dot_size, dot_size);
   lv_obj_set_size(two_dot, dot_size, dot_size);
@@ -131,58 +130,66 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   lv_obj_align(batteryIcon, NULL, LV_ALIGN_IN_BOTTOM_RIGHT, -8, -4);
 
   notificationIcon = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FF00));
+  lv_obj_set_style_local_text_color(notificationIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_label_set_text(notificationIcon, NotificationIcon::GetIcon(false));
   lv_obj_align(notificationIcon, NULL, LV_ALIGN_IN_BOTTOM_LEFT, 8, -4);
 
   // Date - Day / Week day
 
   label_date_day = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_set_style_local_text_color(label_date_day, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xf0a500));
+  lv_obj_set_style_local_text_color(label_date_day, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
   lv_label_set_text_fmt(label_date_day, "%s\n%02i", dateTimeController.DayOfWeekShortToString(), dateTimeController.Day());
   lv_label_set_align(label_date_day, LV_LABEL_ALIGN_CENTER);
   lv_obj_align(label_date_day, NULL, LV_ALIGN_CENTER, 50, 0);
 
-  minute_body = lv_line_create(lv_scr_act(), NULL);
-  minute_body_trace = lv_line_create(lv_scr_act(), NULL);
-  hour_body = lv_line_create(lv_scr_act(), NULL);
-  hour_body_trace = lv_line_create(lv_scr_act(), NULL);
+  min_bar_1 = lv_line_create(lv_scr_act(), NULL);
+  hour_bar_1 = lv_line_create(lv_scr_act(), NULL);
   second_body = lv_line_create(lv_scr_act(), NULL);
 
   lv_style_init(&second_line_style);
   lv_style_set_line_width(&second_line_style, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&second_line_style, LV_STATE_DEFAULT, LV_COLOR_GREY);
+  lv_style_set_line_color(&second_line_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
   lv_style_set_line_rounded(&second_line_style, LV_STATE_DEFAULT, true);
   lv_obj_add_style(second_body, LV_LINE_PART_MAIN, &second_line_style);
 
-  lv_style_init(&minute_line_style);
-  lv_style_set_line_width(&minute_line_style, LV_STATE_DEFAULT, 7);
-  lv_style_set_line_color(&minute_line_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&minute_line_style, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(minute_body, LV_LINE_PART_MAIN, &minute_line_style);
-
-  lv_style_init(&minute_line_style_trace);
-  lv_style_set_line_width(&minute_line_style_trace, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&minute_line_style_trace, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&minute_line_style_trace, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(minute_body_trace, LV_LINE_PART_MAIN, &minute_line_style_trace);
-
-  lv_style_init(&hour_line_style);
-  lv_style_set_line_width(&hour_line_style, LV_STATE_DEFAULT, 7);
-  lv_style_set_line_color(&hour_line_style, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&hour_line_style, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(hour_body, LV_LINE_PART_MAIN, &hour_line_style);
-
-  lv_style_init(&hour_line_style_trace);
-  lv_style_set_line_width(&hour_line_style_trace, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&hour_line_style_trace, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&hour_line_style_trace, LV_STATE_DEFAULT, true);
-  lv_obj_add_style(hour_body_trace, LV_LINE_PART_MAIN, &hour_line_style_trace);
+  lv_style_init(&min_hour_style);
+  lv_style_set_line_width(&min_hour_style, LV_STATE_DEFAULT, 3);
+  lv_style_set_line_color(&min_hour_style, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+  lv_style_set_line_rounded(&min_hour_style, LV_STATE_DEFAULT, true);
+  lv_obj_add_style(min_bar_1, LV_LINE_PART_MAIN, &min_hour_style);
 
   //hands (ordered later to overlap hands)
   seconds_dot = lv_led_create(lv_scr_act(), nullptr);
+  min_bar_1 = lv_line_create(lv_scr_act(), nullptr);
+  min_bar_2 = lv_line_create(lv_scr_act(), nullptr);
+  hour_bar_1 = lv_line_create(lv_scr_act(), nullptr);
+  hour_bar_2 = lv_line_create(lv_scr_act(), nullptr);
+
+  min_tri_1 = lv_line_create(lv_scr_act(), nullptr);
+  min_tri_2 = lv_line_create(lv_scr_act(), nullptr);
+  min_tri_3 = lv_line_create(lv_scr_act(), nullptr);
+  hour_tri_1 = lv_line_create(lv_scr_act(), nullptr);
+  hour_tri_2 = lv_line_create(lv_scr_act(), nullptr);
+  hour_tri_3 = lv_line_create(lv_scr_act(), nullptr);
+
+  lv_style_init(&tri_style);
+  lv_style_set_line_width(&tri_style, LV_STATE_DEFAULT, 2);
+  lv_style_set_line_color(&tri_style, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_style_set_line_rounded(&tri_style, LV_STATE_DEFAULT, true);
 
   lv_obj_add_style(seconds_dot, LV_LED_PART_MAIN, &dots_style);
+
+  lv_obj_add_style(min_bar_1, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(min_bar_2, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(hour_bar_1, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(hour_bar_2, LV_LED_PART_MAIN, &tri_style);
+
+  lv_obj_add_style(min_tri_1, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(min_tri_2, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(min_tri_3, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(hour_tri_1, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(hour_tri_2, LV_LED_PART_MAIN, &tri_style);
+  lv_obj_add_style(hour_tri_3, LV_LED_PART_MAIN, &tri_style);
 
   lv_obj_set_size(seconds_dot, (dot_size * .5) , (dot_size * .5));
 
@@ -191,10 +198,7 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
 
 WatchFaceAnalog::~WatchFaceAnalog() {
 
-  lv_style_reset(&hour_line_style);
-  lv_style_reset(&hour_line_style_trace);
-  lv_style_reset(&minute_line_style);
-  lv_style_reset(&minute_line_style_trace);
+  lv_style_reset(&min_hour_style);
   lv_style_reset(&second_line_style);
 
   lv_obj_clean(lv_scr_act());
@@ -207,35 +211,55 @@ void WatchFaceAnalog::UpdateClock() {
   second = dateTimeController.Seconds();
 
   if (sMinute != minute) {
-    minute_point[0].x = coordinate_x_relocate(30 * sin(minute * 6 * PI / 180));
-    minute_point[0].y = coordinate_y_relocate(30 * cos(minute * 6 * PI / 180));
-    minute_point[1].x = coordinate_x_relocate(MINUTE_LENGTH * sin(minute * 6 * PI / 180));
-    minute_point[1].y = coordinate_y_relocate(MINUTE_LENGTH * cos(minute * 6 * PI / 180));
+    minute_point_1[0].x = coordinate_x_relocate(5 * sin((minute - 1) * 6 * PI / 180));
+    minute_point_1[0].y = coordinate_y_relocate(5 * cos((minute - 1) * 6 * PI / 180));
+    minute_point_1[1].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute - 1) * 6 * PI / 180));
+    minute_point_1[1].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute - 1) * 6 * PI / 180));
 
-    minute_point_trace[0].x = coordinate_x_relocate(5 * sin(minute * 6 * PI / 180));
-    minute_point_trace[0].y = coordinate_y_relocate(5 * cos(minute * 6 * PI / 180));
-    minute_point_trace[1].x = coordinate_x_relocate(31 * sin(minute * 6 * PI / 180));
-    minute_point_trace[1].y = coordinate_y_relocate(31 * cos(minute * 6 * PI / 180));
+    minute_point_2[0].x = coordinate_x_relocate(5 * sin((minute + 1) * 6 * PI / 180));
+    minute_point_2[0].y = coordinate_y_relocate(5 * cos((minute + 1) * 6 * PI / 180));
+    minute_point_2[1].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute + 1) * 6 * PI / 180));
+    minute_point_2[1].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute + 1) * 6 * PI / 180));
 
-    lv_line_set_points(minute_body, minute_point, 2);
-    lv_line_set_points(minute_body_trace, minute_point_trace, 2);
+    //base
+    minute_tri_set_1[0].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute - 1) * 6 * PI / 180));
+    minute_tri_set_1[0].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute - 1) * 6 * PI / 180));
+    minute_tri_set_1[1].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute + 1) * 6 * PI / 180));
+    minute_tri_set_1[1].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute + 1) * 6 * PI / 180));
+    //left of base
+    minute_tri_set_2[0].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute - 1) * 6 * PI / 180));
+    minute_tri_set_2[0].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute - 1) * 6 * PI / 180));
+    minute_tri_set_2[1].x = coordinate_x_relocate((MINUTE_LENGTH * 1.2) * sin(minute * 6 * PI / 180));
+    minute_tri_set_2[1].y = coordinate_y_relocate((MINUTE_LENGTH * 1.2) * cos(minute * 6 * PI / 180));
+    //right of base
+    minute_tri_set_3[0].x = coordinate_x_relocate((MINUTE_LENGTH * 1.2) * sin(minute * 6 * PI / 180));
+    minute_tri_set_3[0].y = coordinate_y_relocate((MINUTE_LENGTH * 1.2) * cos(minute * 6 * PI / 180));
+    minute_tri_set_3[1].x = coordinate_x_relocate(MINUTE_LENGTH * sin((minute + 1) * 6 * PI / 180));
+    minute_tri_set_3[1].y = coordinate_y_relocate(MINUTE_LENGTH * cos((minute + 1) * 6 * PI / 180));
+
+    lv_line_set_points(min_bar_1, minute_point_1, 2);
+    lv_line_set_points(min_bar_2, minute_point_2, 2);
+    lv_line_set_points(min_tri_1, minute_tri_set_1, 2);
+    lv_line_set_points(min_tri_2, minute_tri_set_2, 2);
+    lv_line_set_points(min_tri_3, minute_tri_set_3, 2);
   }
 
   if (sHour != hour || sMinute != minute) {
     sHour = hour;
     sMinute = minute;
-    hour_point[0].x = coordinate_x_relocate(30 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point[0].y = coordinate_y_relocate(30 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
 
-    hour_point_trace[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_trace[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_trace[1].x = coordinate_x_relocate(31 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_trace[1].y = coordinate_y_relocate(31 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    //TODO: ???? hour offset 
+    hour_point_2[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
 
-    lv_line_set_points(hour_body, hour_point, 2);
-    lv_line_set_points(hour_body_trace, hour_point_trace, 2);
+    lv_line_set_points(hour_bar_1, hour_point_1, 2);
+    lv_line_set_points(hour_bar_2, hour_point_2, 2);
   }
 
   if (sSecond != second) {
