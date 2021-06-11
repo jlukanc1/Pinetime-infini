@@ -101,7 +101,8 @@ namespace Pinetime {
         lv_style_t bars_style;
         lv_style_t tri_style;
 
-        lv_obj_t* label_date_day;
+        lv_obj_t* label_date;
+        lv_obj_t* label_day;
         lv_obj_t* batteryIcon;
         lv_obj_t* notificationIcon;
 

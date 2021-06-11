@@ -136,11 +136,17 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
 
   // Date - Day / Week day
 
-  label_date_day = lv_label_create(lv_scr_act(), NULL);
-  lv_obj_set_style_local_text_color(label_date_day, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_CYAN);
-  lv_label_set_text_fmt(label_date_day, "%s\n%02i", dateTimeController.DayOfWeekShortToString(), dateTimeController.Day());
-  lv_label_set_align(label_date_day, LV_LABEL_ALIGN_CENTER);
-  lv_obj_align(label_date_day, NULL, LV_ALIGN_CENTER, 50, 0);
+  label_date = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style_local_text_color(label_date, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+  lv_label_set_text_fmt(label_date, "%s", dateTimeController.DayOfWeekShortToString());
+  lv_label_set_align(label_date, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_date, NULL, LV_ALIGN_CENTER, 40, 0);
+
+  label_day = lv_label_create(lv_scr_act(), NULL);
+  lv_obj_set_style_local_text_color(label_day, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, LV_COLOR_GRAY);
+  lv_label_set_text_fmt(label_day, "%02i", dateTimeController.Day());
+  lv_label_set_align(label_day, LV_LABEL_ALIGN_CENTER);
+  lv_obj_align(label_day, NULL, LV_ALIGN_CENTER, -60, 0);
 
   min_bar_1 = lv_line_create(lv_scr_act(), NULL);
   hour_bar_1 = lv_line_create(lv_scr_act(), NULL);
@@ -252,18 +258,18 @@ void WatchFaceAnalog::UpdateClock() {
     hour_point_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
     hour_point_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
 
-    hour_point_2[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
 
     hour_tri_set_1[0].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180)); //end 1
     hour_tri_set_1[0].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180)); 
-    hour_tri_set_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //end 2
-    hour_tri_set_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_tri_set_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //end 2
+    hour_tri_set_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
 
-    hour_tri_set_2[0].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //tri 1-1
-    hour_tri_set_2[0].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_tri_set_2[0].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //tri 1-1
+    hour_tri_set_2[0].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.75 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
     hour_tri_set_2[1].x = coordinate_x_relocate((HOUR_LENGTH * 1.2) * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180)); //tri 1-2
     hour_tri_set_2[1].y = coordinate_y_relocate((HOUR_LENGTH * 1.2) * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
 
@@ -319,7 +325,8 @@ bool WatchFaceAnalog::Refresh() {
 
     if ((month != currentMonth) || (dayOfWeek != currentDayOfWeek) || (day != currentDay)) {
 
-      lv_label_set_text_fmt(label_date_day, "%s\n%02i", dateTimeController.DayOfWeekShortToString(), day);
+      lv_label_set_text_fmt(label_date, "%s", dateTimeController.DayOfWeekShortToString());
+      lv_label_set_text_fmt(label_day, "%02i", day);
 
       currentMonth = month;
       currentDayOfWeek = dayOfWeek;
