@@ -247,19 +247,36 @@ void WatchFaceAnalog::UpdateClock() {
   if (sHour != hour || sMinute != minute) {
     sHour = hour;
     sMinute = minute;
-    hour_point_1[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_1[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
 
-    //TODO: ???? hour offset 
-    hour_point_2[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
-    hour_point_2[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[0].x = coordinate_x_relocate(5 * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[0].y = coordinate_y_relocate(5 * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_point_2[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+
+    hour_tri_set_1[0].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180)); //end 1
+    hour_tri_set_1[0].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180)); 
+    hour_tri_set_1[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //end 2
+    hour_tri_set_1[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+
+    hour_tri_set_2[0].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180)); //tri 1-1
+    hour_tri_set_2[0].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 11.25 : hour + .25) * 30) + (minute * 0.5)) * PI / 180));
+    hour_tri_set_2[1].x = coordinate_x_relocate((HOUR_LENGTH * 1.2) * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180)); //tri 1-2
+    hour_tri_set_2[1].y = coordinate_y_relocate((HOUR_LENGTH * 1.2) * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+
+    hour_tri_set_3[0].x = coordinate_x_relocate((HOUR_LENGTH * 1.2) * sin((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180)); //tri 2-2
+    hour_tri_set_3[0].y = coordinate_y_relocate((HOUR_LENGTH * 1.2) * cos((((hour > 12 ? hour - 12 : hour) * 30) + (minute * 0.5)) * PI / 180));
+    hour_tri_set_3[1].x = coordinate_x_relocate(HOUR_LENGTH * sin((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180)); //end 2
+    hour_tri_set_3[1].y = coordinate_y_relocate(HOUR_LENGTH * cos((((hour > 12 ? hour - 12.25 : hour - .25) * 30) + (minute * 0.5)) * PI / 180));
 
     lv_line_set_points(hour_bar_1, hour_point_1, 2);
     lv_line_set_points(hour_bar_2, hour_point_2, 2);
+    lv_line_set_points(hour_tri_1, hour_tri_set_1, 2);
+    lv_line_set_points(hour_tri_2, hour_tri_set_2, 2);
+    lv_line_set_points(hour_tri_3, hour_tri_set_3, 2);
   }
 
   if (sSecond != second) {
