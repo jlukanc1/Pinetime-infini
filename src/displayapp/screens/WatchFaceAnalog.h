@@ -71,6 +71,7 @@ namespace Pinetime {
         lv_obj_t* eight_dot;
         lv_obj_t* ten_dot;
         lv_obj_t* eleven_dot;
+        lv_obj_t* seconds_dot;
 
         // ##
         lv_point_t hour_point[2];
@@ -78,6 +79,8 @@ namespace Pinetime {
         lv_point_t minute_point[2];
         lv_point_t minute_point_trace[2];
         lv_point_t second_point[2];
+        lv_point_t bar_point_horitz[2];
+        lv_point_t bar_point_vert[2];
 
         // ##
         lv_style_t hour_line_style;
@@ -86,6 +89,7 @@ namespace Pinetime {
         lv_style_t minute_line_style_trace;
         lv_style_t second_line_style;
         lv_style_t dots_style;
+        lv_style_t bars_style;
 
         lv_obj_t* label_date_day;
         lv_obj_t* batteryIcon;

@@ -12,9 +12,11 @@
 using namespace Pinetime::Applications::Screens;
 
 #define HOUR_LENGTH   70
-#define MINUTE_LENGTH 90
-#define SECOND_LENGTH 110
+#define MINUTE_LENGTH 80
+#define SECOND_LENGTH 90
 #define PI            3.14159265358979323846
+#define dot_size      16
+
 
 // ##
 static int16_t coordinate_x_relocate(int16_t x) {
@@ -44,11 +46,6 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   sHour = 99;
   sMinute = 99;
   sSecond = 99;
-/*
-  lv_obj_t* bg_clock_img = lv_img_create(lv_scr_act(), NULL);
-  lv_img_set_src(bg_clock_img, &bg_clock);
-  lv_obj_align(bg_clock_img, NULL, LV_ALIGN_CENTER, 0, 0);
-*/
   //create bars at 3,6,9, and 2 bars at 12
   three_bar = lv_line_create(lv_scr_act(), nullptr);
   six_bar = lv_line_create(lv_scr_act(), nullptr);
@@ -66,29 +63,68 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   eleven_dot = lv_led_create(lv_scr_act(), nullptr);
 
   lv_style_init(&dots_style);
-  //lv_style_set_size(&dots_style, LV_STATE_DEFAULT, 8);
-  lv_style_set_radius(&dots_style, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);
-  lv_style_set_border_color(&dots_style, LV_STATE_DEFAULT, lv_color_hex(0x18FFFF));
+  lv_style_set_radius(&dots_style, LV_STATE_DEFAULT, LV_RADIUS_CIRCLE);   //corner radius, not size
+  lv_style_set_bg_color(&dots_style, LV_STATE_DEFAULT, lv_color_hex(0x18FFFF));
+  lv_style_set_bg_opa(&dots_style, LV_STATE_DEFAULT, LV_OPA_100);
 
-  lv_obj_add_style(one_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(two_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(four_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(five_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(seven_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(eight_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(ten_dot, LV_LINE_PART_MAIN, &dots_style);
-  lv_obj_add_style(eleven_dot, LV_LINE_PART_MAIN, &dots_style);
+  lv_style_init(&bars_style);
+  lv_style_set_line_width(&bars_style, LV_STATE_DEFAULT, 8);
+  lv_style_set_line_color(&bars_style, LV_STATE_DEFAULT, LV_COLOR_CYAN);
+  lv_style_set_line_rounded(&bars_style, LV_STATE_DEFAULT, true);
+  lv_style_set_radius(&bars_style, LV_STATE_DEFAULT, 4);
 
-  lv_obj_align(one_dot, NULL, LV_ALIGN_CENTER, 0, 0);
-  //lv_obj_align(one_dot, NULL, LV_ALIGN_CENTER, 120 * sin(1 * 30 * PI / 180), -120 * cos(1 * 30 * PI / 180));
-  lv_obj_align(two_dot, NULL, LV_ALIGN_CENTER, 120 * sin(2 * 30 * PI / 180), -120 * cos(2 * 30 * PI / 180));
-  lv_obj_align(four_dot, NULL, LV_ALIGN_CENTER, 120 * sin(4 * 30 * PI / 180), -120 * cos(4 * 30 * PI / 180));
-  lv_obj_align(five_dot, NULL, LV_ALIGN_CENTER, 120 * sin(5 * 30 * PI / 180), -120 * cos(5 * 30 * PI / 180));
-  lv_obj_align(seven_dot, NULL, LV_ALIGN_CENTER, 120 * sin(7 * 30 * PI / 180), -120 * cos(7 * 30 * PI / 180));
-  lv_obj_align(eight_dot, NULL, LV_ALIGN_CENTER, 120 * sin(8 * 30 * PI / 180), -120 * cos(8 * 30 * PI / 180));
-  lv_obj_align(ten_dot, NULL, LV_ALIGN_CENTER, 120 * sin(10 * 30 * PI / 180), -120 * cos(10 * 30 * PI / 180));
-  lv_obj_align(eleven_dot, NULL, LV_ALIGN_CENTER, 120 * sin(11 * 30 * PI / 180), -120 * cos(11 * 30 * PI / 180));
-  lv_led_on(one_dot);
+  lv_obj_add_style(one_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(two_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(four_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(five_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(seven_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(eight_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(ten_dot, LV_LED_PART_MAIN, &dots_style);
+  lv_obj_add_style(eleven_dot, LV_LED_PART_MAIN, &dots_style);
+
+  lv_obj_add_style(three_bar, LV_LINE_PART_MAIN, &bars_style);
+  lv_obj_add_style(six_bar, LV_LINE_PART_MAIN, &bars_style);
+  lv_obj_add_style(nine_bar, LV_LINE_PART_MAIN, &bars_style);
+  lv_obj_add_style(twelve_bar_1, LV_LINE_PART_MAIN, &bars_style);
+  lv_obj_add_style(twelve_bar_2, LV_LINE_PART_MAIN, &bars_style);
+
+  lv_obj_align(one_dot, NULL, LV_ALIGN_CENTER, 110 * sin(1 * 30 * PI / 180), -110 * cos(1 * 30 * PI / 180));
+  lv_obj_align(two_dot, NULL, LV_ALIGN_CENTER, 110 * sin(2 * 30 * PI / 180), -110 * cos(2 * 30 * PI / 180));
+  lv_obj_align(four_dot, NULL, LV_ALIGN_CENTER, 110 * sin(4 * 30 * PI / 180), -110 * cos(4 * 30 * PI / 180));
+  lv_obj_align(five_dot, NULL, LV_ALIGN_CENTER, 110 * sin(5 * 30 * PI / 180), -110 * cos(5 * 30 * PI / 180));
+  lv_obj_align(seven_dot, NULL, LV_ALIGN_CENTER, 110 * sin(7 * 30 * PI / 180), -110 * cos(7 * 30 * PI / 180));
+  lv_obj_align(eight_dot, NULL, LV_ALIGN_CENTER, 110 * sin(8 * 30 * PI / 180), -110 * cos(8 * 30 * PI / 180));
+  lv_obj_align(ten_dot, NULL, LV_ALIGN_CENTER, 110 * sin(10 * 30 * PI / 180), -110 * cos(10 * 30 * PI / 180));
+  lv_obj_align(eleven_dot, NULL, LV_ALIGN_CENTER, 110 * sin(11 * 30 * PI / 180), -110 * cos(11 * 30 * PI / 180));
+
+  bar_point_horitz[0].x = 0;
+  bar_point_horitz[0].y = 0;
+  bar_point_horitz[1].x = 24;
+  bar_point_horitz[1].y = 0;
+  lv_line_set_points(three_bar, bar_point_horitz, 2);
+  lv_line_set_points(nine_bar, bar_point_horitz, 2);
+  bar_point_vert[0].x = 0;
+  bar_point_vert[0].y = 0;
+  bar_point_vert[1].x = 0;
+  bar_point_vert[1].y = 24;
+  lv_line_set_points(six_bar, bar_point_vert, 2);
+  lv_line_set_points(twelve_bar_1, bar_point_vert, 2);
+  lv_line_set_points(twelve_bar_2, bar_point_vert, 2);
+
+  lv_obj_align(three_bar, NULL, LV_ALIGN_CENTER, 100, 4);
+  lv_obj_align(six_bar, NULL, LV_ALIGN_CENTER, 4, 100);
+  lv_obj_align(nine_bar, NULL, LV_ALIGN_CENTER, -100, 4);
+  lv_obj_align(twelve_bar_1, NULL, LV_ALIGN_CENTER, -4, -100);
+  lv_obj_align(twelve_bar_2, NULL, LV_ALIGN_CENTER, 12, -100);
+
+  lv_obj_set_size(one_dot, dot_size, dot_size);
+  lv_obj_set_size(two_dot, dot_size, dot_size);
+  lv_obj_set_size(four_dot, dot_size, dot_size);
+  lv_obj_set_size(five_dot, dot_size, dot_size);
+  lv_obj_set_size(seven_dot, dot_size, dot_size);
+  lv_obj_set_size(eight_dot, dot_size, dot_size);
+  lv_obj_set_size(ten_dot, dot_size, dot_size);
+  lv_obj_set_size(eleven_dot, dot_size, dot_size);
 
   batteryIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_label_set_text(batteryIcon, Symbols::batteryHalf);
@@ -115,7 +151,7 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
 
   lv_style_init(&second_line_style);
   lv_style_set_line_width(&second_line_style, LV_STATE_DEFAULT, 3);
-  lv_style_set_line_color(&second_line_style, LV_STATE_DEFAULT, LV_COLOR_RED);
+  lv_style_set_line_color(&second_line_style, LV_STATE_DEFAULT, LV_COLOR_GREY);
   lv_style_set_line_rounded(&second_line_style, LV_STATE_DEFAULT, true);
   lv_obj_add_style(second_body, LV_LINE_PART_MAIN, &second_line_style);
 
@@ -128,7 +164,7 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   lv_style_init(&minute_line_style_trace);
   lv_style_set_line_width(&minute_line_style_trace, LV_STATE_DEFAULT, 3);
   lv_style_set_line_color(&minute_line_style_trace, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&minute_line_style_trace, LV_STATE_DEFAULT, false);
+  lv_style_set_line_rounded(&minute_line_style_trace, LV_STATE_DEFAULT, true);
   lv_obj_add_style(minute_body_trace, LV_LINE_PART_MAIN, &minute_line_style_trace);
 
   lv_style_init(&hour_line_style);
@@ -140,8 +176,15 @@ WatchFaceAnalog::WatchFaceAnalog(Pinetime::Applications::DisplayApp* app,
   lv_style_init(&hour_line_style_trace);
   lv_style_set_line_width(&hour_line_style_trace, LV_STATE_DEFAULT, 3);
   lv_style_set_line_color(&hour_line_style_trace, LV_STATE_DEFAULT, LV_COLOR_WHITE);
-  lv_style_set_line_rounded(&hour_line_style_trace, LV_STATE_DEFAULT, false);
+  lv_style_set_line_rounded(&hour_line_style_trace, LV_STATE_DEFAULT, true);
   lv_obj_add_style(hour_body_trace, LV_LINE_PART_MAIN, &hour_line_style_trace);
+
+  //hands (ordered later to overlap hands)
+  seconds_dot = lv_led_create(lv_scr_act(), nullptr);
+
+  lv_obj_add_style(seconds_dot, LV_LED_PART_MAIN, &dots_style);
+
+  lv_obj_set_size(seconds_dot, (dot_size * .5) , (dot_size * .5));
 
   UpdateClock();
 }
@@ -202,6 +245,7 @@ void WatchFaceAnalog::UpdateClock() {
     second_point[1].x = coordinate_x_relocate(SECOND_LENGTH * sin(second * 6 * PI / 180));
     second_point[1].y = coordinate_y_relocate(SECOND_LENGTH * cos(second * 6 * PI / 180));
     lv_line_set_points(second_body, second_point, 2);
+    lv_obj_align(seconds_dot, NULL, LV_ALIGN_CENTER, -(SECOND_LENGTH - 20) * sin((180 + second * 6) * PI / 180), (SECOND_LENGTH - 20) * cos((180 + second * 6) * PI / 180));
   }
 }
 
