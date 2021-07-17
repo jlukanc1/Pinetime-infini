@@ -149,7 +149,7 @@ typedef void* lv_anim_user_data_t;
 #endif
 
 /* 1: Enable shadow drawing on rectangles*/
-#define LV_USE_SHADOW           0
+#define LV_USE_SHADOW           1
 #if LV_USE_SHADOW
 /* Allow buffering some shadow calculation
  * LV_SHADOW_CACHE_SIZE is the max. shadow size to buffer,
@@ -159,10 +159,10 @@ typedef void* lv_anim_user_data_t;
 #endif
 
 /*1: enable outline drawing on rectangles*/
-#define LV_USE_OUTLINE  0
+#define LV_USE_OUTLINE  1
 
 /*1: enable pattern drawing on rectangles*/
-#define LV_USE_PATTERN  0
+#define LV_USE_PATTERN  1
 
 /*1: enable value string drawing on rectangles*/
 #define LV_USE_VALUE_STR    1
@@ -174,7 +174,7 @@ typedef void* lv_anim_user_data_t;
 #define LV_USE_OPA_SCALE        0
 
 /* 1: Use image zoom and rotation*/
-#define LV_USE_IMG_TRANSFORM    0
+#define LV_USE_IMG_TRANSFORM    1
 
 /* 1: Enable object groups (for keyboard/encoder navigation) */
 #define LV_USE_GROUP            0
@@ -648,7 +648,7 @@ typedef void* lv_obj_user_data_t;
 #endif
 
 /*LED (dependencies: -)*/
-#define LV_USE_LED      0
+#define LV_USE_LED      1
 #if LV_USE_LED
 #define LV_LED_BRIGHT_MIN  120      /*Minimal brightness*/
 #define LV_LED_BRIGHT_MAX  255     /*Maximal brightness*/
